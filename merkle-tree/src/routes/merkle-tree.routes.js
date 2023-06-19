@@ -27,22 +27,22 @@ async function startEventFilter(req, res, next) {
 
   const { contractName, contractAddress } = req.body; // contractAddress & treeId are optional parameters. Address can instead be inferred by Timber in many cases.
 
-  console.log(
+  logger.info(
     `merkle-tree-routes - I have received: contractName: ${contractName}, contractAddress: ${contractAddress}`,
   );
 
   // Pawel's note - From what I see Timber uses something called a "treeId" to identify the tree related to a given contract instance. Let's try making the treeId a concat of contractName, a "-" and contractAddress, so that we have a unique key to identify various trees.
   // But for some reason, it looks like something optional. But in our use case we need it. Let's also not rename this variable because it will get too messy.
 
-  console.log;
+  logger.info;
 
   // Pawel's TODO idea: Ignore the contractAddress above. We'll get the Contract ID from the header
 
   const contractid = req.headers.contractid;
-  console.log(`Received startEventFilter for contract ID ${contractid}`);
+  logger.info(`Received startEventFilter for contract ID ${contractid}`);
 
   // Pawel's note - Let's also not get the treeId from the caller. I've removed it from line 27. We will compute it based on the received contract info.
-  console.log('Computing treeId');
+  logger.info('Computing treeId');
   const treeId = `${contractName}-${contractAddress}`;
 
   const { db } = req.user;
@@ -65,7 +65,7 @@ async function startEventFilter(req, res, next) {
         alreadyStarting[(contractName, treeId)] = true;
         logger.info(`starting filter for ${contractName}.${treeId}`);
 
-        console.log(`Actually, we are starting it for ${treeId}`)
+        logger.info(`Actually, we are starting it for ${treeId}`)
         
       // get a web3 contractInstance we can work with:
 
